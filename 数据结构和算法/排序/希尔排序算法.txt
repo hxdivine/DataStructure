@@ -1,0 +1,57 @@
+希尔排序  ShellSorting
+希尔排序也是一种插入排序，它是经过改进后的一个更高效的版本
+/**************************************************************************/
+思路分析
+希尔排序是把记录按下标的 一定增量分组，对每组使用直接插入排序算法排序，随着增量减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰好分成一组，算法结束
+
+	8 9 1 7 2 3 5 4 6 0
+初始分组 gap=length/2=5
+	8 和3   9和 5  1和 4  7和 6  2和 0 （步长为5）
+每组进行插入排序
+ 	3 5 1 6 0 8 9 4 7 2
+再分组gap=5/2=2
+ 	3 1 0 9 7  和  5 6 8 4 2
+进行插入排序
+	0 2 1 4 3 5 7 6 9 8
+最后gap=1
+插入排序
+	0 1 2 3 4 5 6 7 8 9
+/**************************************************************************/
+//交换法 耗费时间较长
+public static void shellSort(int[] arr) {
+	int temp = 0;
+	int count = 0;
+	for(int gap = arr.length / 2; gap > 0; gap /= 2) {
+		for(int i = gap; i <arr.length; i++) {
+			for(int j = i - gap; j >=0; j -= gap) {
+				if(arr[j] > arr[j + gap]) {
+					temp = arr[j];
+					arr[j] = arr[j + gap];
+					arr[j + gap] = temp;
+				}
+			}
+		}
+	System.out.println("希尔排序第"+ (++count) + "排序:  " + Arrays.toString(arr));
+	}
+}
+	//移动法  从分组开始采用插入排序
+public static void shellSort1(int[] arr) {
+	int count = 0;
+	for(int gap = arr.length / 2; gap > 0; gap /= 2) {
+		for(int i = gap; i < arr.length; i++) {
+			//进行插入排序
+			int j = i;
+			int temp = arr[j];
+			if(arr[j] < arr[j - gap]) {
+				while(j - gap >= 0 && temp < arr[j - gap]) {
+					arr[j] = arr[j - gap];
+					j -= gap;
+				}
+				arr[j] = temp;
+			}
+		}
+	System.out.println("希尔排序第"+ (++count) + "排序:  " + Arrays.toString(arr));
+	}
+}
+
+/**************************************************************************/

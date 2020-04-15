@@ -1,0 +1,57 @@
+基数排序 radix sort （运行时间快，，但消耗空间，以空间换时间）
+属于分配式排序，通过键值的各个位的值，将排序的元素分配到某些桶中，从而达到排序目的
+/*****************************************************************************/
+一共十个桶下标是0 -- 9
+0【】 1 【】 2【】 3 【】 4【】 5 【】 6【】 7 【】 8【】 9【】
+
+数组的初始状态   53 3 542 748 14 214
+
+第一轮排序：将每个元素的个位数取出，然后一一对应放在桶中
+0【】 1 【】 2【542】 3 【53，3】 4【14，214】 5 【】 6【】 7 【748】 8【】 9【】
+按顺序排序    542 53 3 14 214 748
+
+第二轮排序：将每个元素的十位数取出，然后一一对应放在桶中
+0【3】  1【14，214】  2【】  3 【】 4【542，748】 5 【53】 6【】 7 【】 8【】 9【】
+按顺序排序    3 14 214 542 748 53
+
+第三轮排序：将每个元素的百位位数取出，然后一一对应放在桶中
+0【3，14，53】  1【】  2【214】  3 【】 4【】 5 【542】 6【】 7 【748】 8【】 9【】
+按顺序排序    3 14 53 214 542 748 
+/*****************************************************************************/
+算法代码：
+public static void radixSort(int[] arr) {
+	//定义十个桶
+	int[][] bucket = new int[10][arr.length];
+	//记录每个桶中存放的有效数据
+	int[] bucketElementCounts = new int[10];
+		
+	int max = arr[0];
+	for(int i = 0; i < arr.length; i++) {
+		if(arr[i] >max) {
+			max = arr[i];
+		}
+	}
+	//得到最大位数的长度
+	int maxlength = (max + "").length();
+		
+	for(int i = 0, n = 1; i < maxlength;n *= 10, i++) {
+		//按位插入到对应的桶中
+		for(int j = 0; j < arr.length; j++) {
+			int digitOfElement = arr[j] / n % 10;
+			int x = bucketElementCounts[digitOfElement];
+			bucket[digitOfElement][x] = arr[j];
+			bucketElementCounts[digitOfElement]++;
+		}
+		//将桶中的数据放到数组中
+		int index = 0;
+		for(int k = 0; k < bucketElementCounts.length; k++) {
+			if(bucketElementCounts[k] != 0) {
+			for(int l = 0; l < bucketElementCounts[k]; l++) {
+				arr[index++] = bucket[k][l];
+			}
+		}
+		bucketElementCounts[k] = 0;
+	}
+}
+
+/*****************************************************************************/

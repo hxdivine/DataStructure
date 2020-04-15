@@ -1,4 +1,4 @@
-package com.linkList;
+package linkList;
 
 import java.util.Stack;
 

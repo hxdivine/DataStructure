@@ -1,0 +1,35 @@
+二分查找算法
+
+对一个有序数组才能进行二分查找
+/**************************************************************************/
+思路分析：
+1. 首先确定该数组的中间下标
+	mid = （left + right） /  2
+2. 然后让需要查找的数findVal 和 arr【mid】比较（假设数组递增）
+	2.1 findVal > arr【mid】，说明需要查找的数在mid右边
+	2.2 findVal < arr【mid】，说明需要查找的数在mid左边
+	2.3 findVal = arr【mid】，说明查找，返回
+//什么时候结束递归
+1）找到就结束递归
+2）递归完整个数组，仍然没有找到，需要结束递归 当 left > right 需要退出
+
+/**************************************************************************/
+代码实现：
+//递归实现
+public static int binarySearch(int[] arr,int left,int right,int findVal){
+	if(left > right){//没有找到
+		return -1;
+	}
+		
+	int mid = (left + right) / 2;
+	int midVal = arr[mid];
+		
+	if(findVal > midVal){
+		return binarySearch(arr,mid+1,right,findVal);
+	}else if(findVal < midVal){
+		return binarySearch(arr, left, mid-1, findVal);
+	}else{
+		return mid;
+	}
+}
+/**************************************************************************/

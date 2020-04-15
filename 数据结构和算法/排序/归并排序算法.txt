@@ -1,0 +1,83 @@
+归并算法  MＥRGE　SORT
+是利用归并的思想实现排序方法
+
+／＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊／
+该算法采用经典的分治策略（分治法将问题分成一些小的问题，然后递归求解，而治的阶段则将分的阶段得到各答案修补在一起）
+时间复杂度　Ｏ（ｎ）
+
+数组　　５　４　７　８　２　１　６　３
+分治　　【５　４　７　８　】【　２　１　６　３】
+分治　　【５　４　】【　７　８　】【　２　１　】【　６　３】
+排序　　【４　５　】【　７　８　】【　１　２　】【　３　６】
+排序　　【４　５　７　８】【　１　２　３　６】
+排序　　【１　２　３　４　５　６　７　８】
+／＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊／
+算法代码
+/**
+ * 分+合的方法
+ * @param arr 原始数组
+* @param left 左边索引
+ * @param right 右边索引
+ * @param temp 临时数组
+*/
+public static void mergeSort(int[] arr, int left, int right, int[] temp) {
+
+	if(left < right) {
+		int mid = (left + right) / 2;
+		//左边
+		mergeSort(arr,left,mid, temp);
+		//右边
+		mergeSort(arr,mid+1,right,temp);
+			
+		merge(arr,left,mid,right,temp);
+		System.out.println(Arrays.toString(arr));
+	}	
+	}
+/**
+ * 合并的方法
+ * @param arr 原始数组
+ * @param left 左边初始索引
+* @param mid 中间索引
+* @param right 右边索引
+ * @param temp 中转数组
+*/
+public static void merge(int[] arr, int left,int mid,int right,int[] temp) {
+	int i = left;
+	int j =mid + 1;
+	int t = 0;// 指向temp数组的当前索引
+		
+	while(i <= mid && j <= right) {
+		if(arr[i] <= arr[j]) {
+			temp[t] = arr[i];
+			t++;
+			i++;
+		}else {
+			temp[t] = arr[j];
+			t++;
+			j++;
+		}
+	}
+	//原始数组中还有没有加到temp中
+	while(true) {
+		if(i <= mid) {
+			temp[t] = arr[i];
+			t++;
+			i++;
+		}else if(j <= right) {
+			temp[t] = arr[j];
+			t++;
+			j++;
+		}else {
+			break;
+		}
+	}
+	//将temp拷贝到arr中
+	t = 0;
+	int tempLeft = left;
+	while(tempLeft <= right) {
+		arr[tempLeft] = temp[t];
+		t++;
+		tempLeft++;
+	}
+}
+／＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊／
