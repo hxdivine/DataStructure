@@ -1,0 +1,37 @@
+插值查找算法 insertValueSearch
+适用于数据量大，数据跳跃性小，分布比较均匀，
+如果不是 不一定会比二分查找快
+/**************************************************************************/
+查找原理
+1 插值查找算法类似于二分查找，不同的是插值查找每次从自适应处开始查找
+
+2 将折半查找中的求mid索引的公式，low表示左边索引的left，high表示右边索引right
+
+3 int midindex =
+   left + (right - left) * (findVal - left) / (arr[right] - arr[left]);/*插值索引*/
+
+
+/**************************************************************************/
+/**
+ * 
+ * @param arr 数组
+* @param left 左索引
+* @param right 右索引
+ * @param findVal 查找值
+* @return  数组下标
+*/
+public static int insertValueSearch(int[] arr, int left,int right,int findVal){
+	if(left > right || findVal < arr[0] || findVal > arr[arr.length - 1]){
+		return -1;
+	}
+	int mid = left + (right - left) * (findVal - arr[left]) / (arr[right] - arr[left]);
+	int midVal = arr[mid];
+	if(findVal > midVal){
+		return insertValueSearch(arr,mid + 1,right,findVal);
+	}else if(findVal < midVal){
+		return insertValueSearch(arr,left,mid - 1,findVal);
+	}else{
+		return mid;
+	}
+}
+/**************************************************************************/
