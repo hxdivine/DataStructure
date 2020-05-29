@@ -11,7 +11,8 @@ public class AVLTree {
 	private Node_A root;
 	 
 	public static void main(String[] args) {
-		int[] arr = {4,3,5,6,7,8};
+		//int[] arr = {4,3,5,6,7,8};
+		int[] arr = {12,10,8,6,5,2};
 		AVLTree avlTree = new AVLTree(); 
 		for(int i = 0; i < arr.length; i++){
 			avlTree.add(new Node_A(arr[i]));
@@ -20,8 +21,9 @@ public class AVLTree {
 		System.out.println("AVL before " + avlTree.root.height());
 		System.out.println("AVL left before " + avlTree.root.leftHeight());
 		System.out.println("AVL right before " + avlTree.root.rightHeight());
+		
 	}
-	
+
 	public void add(Node_A node){
 		if(root == null){
 			root = node;
@@ -196,7 +198,21 @@ class Node_A {
 		}
 		
 		if(rightHeight() - leftHeight() > 1){
-			leftRotate();
+			if(right != null && right.leftHeight() > right.rightHeight()){
+				right.rightRotate();
+				leftRotate();
+			}else{
+				leftRotate();
+			}
+			return;
+		}
+		if(leftHeight() - rightHeight() > 1){
+			if(left != null && left.rightHeight() > left.leftHeight()){
+				left.leftRotate();
+				rightRotate();
+			}else{
+				rightRotate();
+			}
 		}
 	}
 	/**
@@ -248,5 +264,21 @@ class Node_A {
 		right = right.right;
 		
 		left = newNode;
+	}
+	/**
+	 * 右旋转
+	 */
+	private void rightRotate(){
+		Node_A newNode = new Node_A(value);
+		
+		newNode.right = right;
+		
+		newNode.left = left.right;
+		
+		value = left.value;
+		
+		left = left.left;
+		
+		right = newNode;
 	}
 }
